@@ -48,7 +48,7 @@ ARG LDFLAGS="-Wl,-z,relro -Wl,-z,now -fPIE -pie"
 
 RUN \
   wget -O libpng.tar.gz "$LIBPNG_URL" && \
-  sha256sum --status -c $(echo "$LIBPNG_SHA256  libpng.tar.gz" > hash ; echo hash) && \
+  echo "$LIBPNG_SHA256  libpng.tar.gz" | sha256sum --status -c - && \
   tar xfz libpng.tar.gz && \
   cd libpng-* && \
   ./configure \
@@ -59,7 +59,7 @@ RUN \
 
 RUN \
   wget -O jpeg.tar.gz "$JPEG_URL" && \
-  sha256sum --status -c $(echo "$JPEG_SHA256  jpeg.tar.gz" > hash ; echo hash) && \
+  echo "$JPEG_SHA256  jpeg.tar.gz" | sha256sum --status -c - && \
   tar xfz jpeg.tar.gz && \
   cd jpeg-* && \
   ./configure \
@@ -70,7 +70,7 @@ RUN \
 
 RUN \
   wget -O jasper.tar.gz "$JASPER_URL" && \
-  sha256sum --status -c $(echo "$JASPER_SHA256  jasper.tar.gz" > hash ; echo hash) && \
+  echo "$JASPER_SHA256  jasper.tar.gz" | sha256sum --status -c - && \
   tar xfz jasper.tar.gz && \
   cd jasper-* && \
   mkdir tmp && \
@@ -80,7 +80,7 @@ RUN \
 
 RUN \
   wget -O libwebp.tar.gz "$LIBWEBP_URL" && \
-  sha256sum --status -c $(echo "$LIBWEBP_SHA256  libwebp.tar.gz" > hash ; echo hash) && \
+  echo "$LIBWEBP_SHA256  libwebp.tar.gz" | sha256sum --status -c - && \
   tar xfz libwebp.tar.gz && \
   cd libwebp-* && \
   ./autogen.sh && \
@@ -95,7 +95,7 @@ RUN \
 
 RUN \
   wget -O tiff.tar.gz "$TIFF_URL" && \
-  sha256sum --status -c $(echo "$TIFF_SHA256  tiff.tar.gz" > hash ; echo hash) && \
+  echo "$TIFF_SHA256  tiff.tar.gz" | sha256sum --status -c - && \
   tar xfz tiff.tar.gz && \
   cd tiff-* && \
   ./autogen.sh && \
@@ -108,7 +108,7 @@ RUN \
 
 RUN \
   wget -O gm.tar.gz "$GM_URL" && \
-  sha256sum --status -c $(echo "$GM_SHA256  gm.tar.gz" > hash ; echo hash) && \
+  echo "$GM_SHA256  gm.tar.gz" | sha256sum --status -c - && \
   tar xfz gm.tar.gz && \
   cd GraphicsMagick-* && \
   ./configure \
