@@ -15,7 +15,8 @@ RUN apk add --no-cache \
   git \
   yasm \
   nasm \
-  zlib-dev
+  zlib-dev \
+  zlib-static
 
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
 ARG GM_VERSION=1.3.33
