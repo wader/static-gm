@@ -1,15 +1,11 @@
-name: 'Automatic version updates'
-on:
-  schedule:
-    # minute hour dom month dow (UTC)
-    - cron: '16 0 * * *'
+name: Build on push
+
+on: [push]
+
 jobs:
-  version_update:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: wader/bump@master
-        with:
-          bump_files: Dockerfile
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker build -t test .
+ 
