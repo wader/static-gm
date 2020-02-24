@@ -19,7 +19,7 @@ RUN apk add --no-cache \
   zlib-static
 
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
-ARG GM_VERSION=1.3.34
+ARG GM_VERSION=1.3.35
 ARG GM_URL="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/$GM_VERSION/GraphicsMagick-$GM_VERSION.tar.gz/download"
 ARG GM_SHA256=4717f7a32d964c515d83706fd52d34e089c2ffa35f8fbf43c923ce19343cf2f4
 # bump: libpng /LIBPNG_VERSION=([\d.]+)/ https://github.com/glennrp/libpng.git|~1.6
