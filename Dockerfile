@@ -39,9 +39,9 @@ ARG LIBWEBP_VERSION=1.1.0
 ARG LIBWEBP_URL="https://github.com/webmproject/libwebp/archive/v$LIBWEBP_VERSION.tar.gz"
 ARG LIBWEBP_SHA256=424faab60a14cb92c2a062733b6977b4cc1e875a6398887c5911b3a1a6c56c51
 # bump: libtiff /TIFF_VERSION=([\d.]+)/ https://gitlab.com/libtiff/libtiff.git|^4
-ARG TIFF_VERSION=4.1.0
+ARG TIFF_VERSION=4.2.0
 ARG TIFF_URL="http://download.osgeo.org/libtiff/tiff-$TIFF_VERSION.tar.gz"
-ARG TIFF_SHA256=5d29f32517dadb6dbcd1255ea5bbc93a2b54b94fbf83653b4d65c7d6775b8634
+ARG TIFF_SHA256=eb0484e568ead8fa23b513e9b0041df7e327f4ee2d22db5a533929dfc19633cb
 
 ARG CFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
 ARG CXXFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
