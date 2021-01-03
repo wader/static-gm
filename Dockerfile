@@ -1,4 +1,5 @@
 # bump: alpine /FROM alpine:([\d.]+)/ docker:alpine|^3
+# bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
 FROM alpine:3.12.3 AS builder
 
 RUN apk add --no-cache \
@@ -19,29 +20,43 @@ RUN apk add --no-cache \
   zlib-static
 
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
+# bump: gm after ./hashupdate Dockerfile GM $LATEST
+# bumo: gm link "NEWS" http://www.graphicsmagick.org/NEWS.html
 ARG GM_VERSION=1.3.36
 ARG GM_URL="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/$GM_VERSION/GraphicsMagick-$GM_VERSION.tar.gz/download"
 ARG GM_SHA256=1e6723c48c4abbb31197fadf8396b2d579d97e197123edc70a4f057f0533d563
 # bump: libpng /LIBPNG_VERSION=([\d.]+)/ https://github.com/glennrp/libpng.git|/^\d+.\d+.\d+/|~1
+# bump: libpng after ./hashupdate Dockerfile LIBPNG $LATEST
+# bump: libpng link "CHANGES" https://github.com/glennrp/libpng/blob/libpng16/CHANGES
+# bump: libpng link "Source diff $CURRENT..$LATEST" https://github.com/glennrp/libpng/compare/v$CURRENT..v$LATEST
 ARG LIBPNG_VERSION=1.6.37
 ARG LIBPNG_URL="https://sourceforge.net/projects/libpng/files/libpng16/$LIBPNG_VERSION/libpng-$LIBPNG_VERSION.tar.gz/download"
 ARG LIBPNG_SHA256=daeb2620d829575513e35fecc83f0d3791a620b9b93d800b763542ece9390fb4
 # bump: jpeg /JPEG_VERSION=([\d.a-z]+)/ fetch:http://www.ijg.org|/The current version is release (.*) of/
+# bump: jpeg after ./hashupdate Dockerfile JPEG $LATEST
 ARG JPEG_VERSION=9d
 ARG JPEG_URL="http://www.ijg.org/files/jpegsrc.v$JPEG_VERSION.tar.gz"
 ARG JPEG_SHA256=99cb50e48a4556bc571dadd27931955ff458aae32f68c4d9c39d624693f69c32
 # bump: jasper /JASPER_VERSION=([\d.]+)/ https://github.com/mdadams/jasper.git|^2
+# bump: jasper after ./hashupdate Dockerfile JASPER $LATEST
+# bump: jasper link "NEWS" https://github.com/jasper-software/jasper/blob/master/NEWS
+# bump: jasper link "Source diff $CURRENT..$LATEST" https://github.com/glennrp/libpng/compare/version-$CURRENT..version-$LATEST
 ARG JASPER_VERSION=2.0.23
 ARG JASPER_URL="https://github.com/mdadams/jasper/archive/version-$JASPER_VERSION.tar.gz"
 ARG JASPER_SHA256=20facc904bd9d38c20e0c090b1be3ae02ae5b2703b803013be2ecad586a18927
-# bump: libwebp /WEBP_VERSION=([\d.]+)/ https://github.com/webmproject/libwebp.git|*
+# bump: libwebp /LIBWEBP_VERSION=([\d.]+)/ https://github.com/webmproject/libwebp.git|*
+# bump: libwebp after ./hashupdate Dockerfile LIBWEBP $LATEST
+# bump: libwebp link "Release notes" https://github.com/webmproject/libwebp/releases/tag/v$LATEST
+# bump: libwebp link "Source diff $CURRENT..$LATEST" https://github.com/webmproject/libwebp/compare/v$CURRENT..v$LATEST
 ARG LIBWEBP_VERSION=1.1.0
 ARG LIBWEBP_URL="https://github.com/webmproject/libwebp/archive/v$LIBWEBP_VERSION.tar.gz"
 ARG LIBWEBP_SHA256=424faab60a14cb92c2a062733b6977b4cc1e875a6398887c5911b3a1a6c56c51
-# bump: libtiff /TIFF_VERSION=([\d.]+)/ https://gitlab.com/libtiff/libtiff.git|^4
-ARG TIFF_VERSION=4.2.0
-ARG TIFF_URL="http://download.osgeo.org/libtiff/tiff-$TIFF_VERSION.tar.gz"
-ARG TIFF_SHA256=eb0484e568ead8fa23b513e9b0041df7e327f4ee2d22db5a533929dfc19633cb
+# bump: libtiff /LIBTIFF_VERSION=([\d.]+)/ https://gitlab.com/libtiff/libtiff.git|^4
+# bump: libtiff after ./hashupdate Dockerfile LIBTIFF $LATEST
+# bump: libtiff link "ChangeLog" https://gitlab.com/libtiff/libtiff/-/blob/master/ChangeLog
+ARG LIBTIFF_VERSION=4.2.0
+ARG LIBTIFF_URL="http://download.osgeo.org/libtiff/tiff-$LIBTIFF_VERSION.tar.gz"
+ARG LIBTIFF_SHA256=eb0484e568ead8fa23b513e9b0041df7e327f4ee2d22db5a533929dfc19633cb
 
 ARG CFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
 ARG CXXFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
@@ -95,8 +110,8 @@ RUN \
   make -j$(nproc) install
 
 RUN \
-  wget -O tiff.tar.gz "$TIFF_URL" && \
-  echo "$TIFF_SHA256  tiff.tar.gz" | sha256sum --status -c - && \
+  wget -O tiff.tar.gz "$LIBTIFF_URL" && \
+  echo "$LIBTIFF_SHA256  tiff.tar.gz" | sha256sum --status -c - && \
   tar xfz tiff.tar.gz && \
   cd tiff-* && \
   ./autogen.sh && \
