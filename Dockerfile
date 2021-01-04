@@ -40,7 +40,7 @@ ARG JPEG_SHA256=99cb50e48a4556bc571dadd27931955ff458aae32f68c4d9c39d624693f69c32
 # bump: jasper /JASPER_VERSION=([\d.]+)/ https://github.com/mdadams/jasper.git|^2
 # bump: jasper after ./hashupdate Dockerfile JASPER $LATEST
 # bump: jasper link "NEWS" https://github.com/jasper-software/jasper/blob/master/NEWS
-# bump: jasper link "Source diff $CURRENT..$LATEST" https://github.com/glennrp/libpng/compare/version-$CURRENT..version-$LATEST
+# bump: jasper link "Source diff $CURRENT..$LATEST" https://github.com/jasper-software/jasper/compare/version-$CURRENT..version-$LATEST
 ARG JASPER_VERSION=2.0.23
 ARG JASPER_URL="https://github.com/mdadams/jasper/archive/version-$JASPER_VERSION.tar.gz"
 ARG JASPER_SHA256=20facc904bd9d38c20e0c090b1be3ae02ae5b2703b803013be2ecad586a18927
