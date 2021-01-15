@@ -1,6 +1,6 @@
 # bump: alpine /FROM alpine:([\d.]+)/ docker:alpine|^3
 # bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
-FROM alpine:3.12.3 AS builder
+FROM alpine:3.13.0 AS builder
 
 RUN apk add --no-cache \
   coreutils \
@@ -36,7 +36,7 @@ ARG LIBPNG_SHA256=daeb2620d829575513e35fecc83f0d3791a620b9b93d800b763542ece9390f
 # bump: jpeg after ./hashupdate Dockerfile JPEG $LATEST
 ARG JPEG_VERSION=9d
 ARG JPEG_URL="http://www.ijg.org/files/jpegsrc.v$JPEG_VERSION.tar.gz"
-ARG JPEG_SHA256=99cb50e48a4556bc571dadd27931955ff458aae32f68c4d9c39d624693f69c32
+ARG JPEG_SHA256=6c434a3be59f8f62425b2e3c077e785c9ce30ee5874ea1c270e843f273ba71ee
 # bump: jasper /JASPER_VERSION=([\d.]+)/ https://github.com/mdadams/jasper.git|^2
 # bump: jasper after ./hashupdate Dockerfile JASPER $LATEST
 # bump: jasper link "NEWS" https://github.com/jasper-software/jasper/blob/master/NEWS
@@ -135,8 +135,8 @@ RUN \
   && \
   make -j$(nproc) install LDFLAGS="-all-static"
 
-# make sure binary have no dependencies
-RUN test $(ldd /usr/local/bin/gm | wc -l) -eq 1
+# make sure binary is static
+RUN file ldd /usr/local/bin/gm | grep "statically linked"
 
 FROM scratch
 COPY --from=builder /usr/local/bin/gm /
