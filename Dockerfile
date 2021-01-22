@@ -127,16 +127,17 @@ RUN \
   echo "$GM_SHA256  gm.tar.gz" | sha256sum --status -c - && \
   tar xfz gm.tar.gz && \
   cd GraphicsMagick-* && \
-  ./configure \
+  LDFLAGS="-static-pie" CFLAGS="-fPIE" ./configure \
   --enable-static \
   --disable-shared \
   --disable-dependency-tracking \
   --with-quantum-depth=16 \
   && \
-  make -j$(nproc) install LDFLAGS="-all-static"
+  make -j$(nproc) install
 
-# make sure binary is static
-RUN file ldd /usr/local/bin/gm | grep "statically linked"
+# make sure binaries has no dependencies, is relro, pie and stack nx
+COPY checkelf /
+RUN /checkelf /usr/local/bin/gm
 
 FROM scratch
 COPY --from=builder /usr/local/bin/gm /
