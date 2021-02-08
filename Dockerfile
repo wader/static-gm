@@ -41,9 +41,9 @@ ARG JPEG_SHA256=6c434a3be59f8f62425b2e3c077e785c9ce30ee5874ea1c270e843f273ba71ee
 # bump: jasper after ./hashupdate Dockerfile JASPER $LATEST
 # bump: jasper link "NEWS" https://github.com/jasper-software/jasper/blob/master/NEWS
 # bump: jasper link "Source diff $CURRENT..$LATEST" https://github.com/jasper-software/jasper/compare/version-$CURRENT..version-$LATEST
-ARG JASPER_VERSION=2.0.24
+ARG JASPER_VERSION=2.0.25
 ARG JASPER_URL="https://github.com/mdadams/jasper/archive/version-$JASPER_VERSION.tar.gz"
-ARG JASPER_SHA256=d2d28e115968d38499163cf8086179503668ce0d71b90dd33855b3de96a1ca1d
+ARG JASPER_SHA256=f5bc48e2884bcabd2aca1737baff4ca962ec665b6eb673966ced1f7adea07edb
 # bump: libwebp /LIBWEBP_VERSION=([\d.]+)/ https://github.com/webmproject/libwebp.git|*
 # bump: libwebp after ./hashupdate Dockerfile LIBWEBP $LATEST
 # bump: libwebp link "Release notes" https://github.com/webmproject/libwebp/releases/tag/v$LATEST
