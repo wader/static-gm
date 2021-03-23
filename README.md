@@ -7,8 +7,9 @@ Built with quantum-depth=16,
 libpng,
 ijg jpeg,
 jasper,
-libwebp and
-libtiff
+libwebp,
+libtiff and
+lcms2
 
 ### Usage
 ```Dockerfile
@@ -20,6 +21,7 @@ docker run --rm -u $UID:$GROUPS -v "$PWD:$PWD" -w "$PWD" mwader/static-gm:1.3.36
 
 ### Files in the image
 `/gm` graphicsmagick binary  
+`/icc-profiles` ICC profiles  
 
 ### Security
 

@@ -57,6 +57,12 @@ ARG LIBWEBP_SHA256=d60608c45682fa1e5d41c3c26c199be5d0184084cd8a971a6fc54035f7648
 ARG LIBTIFF_VERSION=4.2.0
 ARG LIBTIFF_URL="http://download.osgeo.org/libtiff/tiff-$LIBTIFF_VERSION.tar.gz"
 ARG LIBTIFF_SHA256=eb0484e568ead8fa23b513e9b0041df7e327f4ee2d22db5a533929dfc19633cb
+# bump: lcms2 /LCMS2_VERSION=([\d.]+)/ https://github.com/mm2/Little-CMS.git|^2
+# bump: lcms2 after ./hashupdate Dockerfile LCMS2 $LATEST
+# bump: lcms2 link "Release" https://github.com/mm2/Little-CMS/releases/tag/lcms$LATEST
+ARG LCMS2_VERSION=2.12
+ARG LCMS2_URL="https://sourceforge.net/projects/lcms/files/lcms/$LCMS2_VERSION/lcms2-$LCMS2_VERSION.tar.gz/download"
+ARG LCMS2_SHA256=18663985e864100455ac3e507625c438c3710354d85e5cbb7cd4043e11fe10f5
 
 ARG CFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
 ARG CXXFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
@@ -123,6 +129,18 @@ RUN \
   make -j$(nproc) install
 
 RUN \
+  wget -O lcms2.tar.gz "$LCMS2_URL" && \
+  echo "$LCMS2_SHA256  lcms2.tar.gz" | sha256sum --status -c - && \
+  tar xfz lcms2.tar.gz && \
+  cd lcms2-* && \
+  ./autogen.sh && \
+  ./configure \
+  --enable-static \
+  --disable-shared \
+  && \
+  make -j$(nproc) install
+
+RUN \
   wget -O gm.tar.gz "$GM_URL" && \
   echo "$GM_SHA256  gm.tar.gz" | sha256sum --status -c - && \
   tar xfz gm.tar.gz && \
@@ -132,6 +150,13 @@ RUN \
   --disable-shared \
   --disable-dependency-tracking \
   --with-quantum-depth=16 \
+  --with-png \
+  --with-jpeg \
+  --with-jp2 \
+  --with-webp \
+  --with-tiff \
+  --with-lcms2 \
+  --with-webp \
   && \
   make -j$(nproc) install
 
@@ -154,4 +179,5 @@ RUN ["/gm" ,"identify", "test_png.tiff"]
 
 FROM scratch
 COPY --from=builder /usr/local/bin/gm /
+COPY icc-profiles /icc-profiles
 ENTRYPOINT ["/gm"]
