@@ -60,9 +60,9 @@ ARG LIBTIFF_SHA256=0e46e5acb087ce7d1ac53cf4f56a09b221537fc86dfc5daaad1c2e89e1b37
 # bump: lcms2 /LCMS2_VERSION=([\d.]+)/ https://github.com/mm2/Little-CMS.git|^2
 # bump: lcms2 after ./hashupdate Dockerfile LCMS2 $LATEST
 # bump: lcms2 link "Release" https://github.com/mm2/Little-CMS/releases/tag/lcms$LATEST
-ARG LCMS2_VERSION=2.12
+ARG LCMS2_VERSION=2.13
 ARG LCMS2_URL="https://sourceforge.net/projects/lcms/files/lcms/$LCMS2_VERSION/lcms2-$LCMS2_VERSION.tar.gz/download"
-ARG LCMS2_SHA256=18663985e864100455ac3e507625c438c3710354d85e5cbb7cd4043e11fe10f5
+ARG LCMS2_SHA256=0c67a5cc144029cfa34647a52809ec399aae488db4258a6a66fba318474a070f
 
 ARG CFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
 ARG CXXFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
