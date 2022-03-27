@@ -22,9 +22,9 @@ RUN apk add --no-cache \
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
 # bump: gm after ./hashupdate Dockerfile GM $LATEST
 # bumo: gm link "NEWS" http://www.graphicsmagick.org/NEWS.html
-ARG GM_VERSION=1.3.37
+ARG GM_VERSION=1.3.38
 ARG GM_URL="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/$GM_VERSION/GraphicsMagick-$GM_VERSION.tar.gz/download"
-ARG GM_SHA256=1020fe55e11d7647bb11d34698a4665d573bf1d3bbf9711254d960312338e399
+ARG GM_SHA256=35b8661f508337314e46aebcbdca6875cc6033a1cf3edff29aa5e14ef8d2d4e1
 # bump: libpng /LIBPNG_VERSION=([\d.]+)/ https://github.com/glennrp/libpng.git|/^\d+.\d+.\d+/|~1
 # bump: libpng after ./hashupdate Dockerfile LIBPNG $LATEST
 # bump: libpng link "CHANGES" https://github.com/glennrp/libpng/blob/libpng16/CHANGES
