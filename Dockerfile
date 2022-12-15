@@ -54,9 +54,9 @@ ARG LIBWEBP_SHA256=dfe7bff3390cd4958da11e760b65318f0a48c32913e4d5bc5e8d55abaaa2d
 # bump: libtiff /LIBTIFF_VERSION=([\d.]+)/ https://gitlab.com/libtiff/libtiff.git|^4
 # bump: libtiff after ./hashupdate Dockerfile LIBTIFF $LATEST
 # bump: libtiff link "ChangeLog" https://gitlab.com/libtiff/libtiff/-/blob/master/ChangeLog
-ARG LIBTIFF_VERSION=4.4.0
+ARG LIBTIFF_VERSION=4.5.0
 ARG LIBTIFF_URL="http://download.osgeo.org/libtiff/tiff-$LIBTIFF_VERSION.tar.gz"
-ARG LIBTIFF_SHA256=917223b37538959aca3b790d2d73aa6e626b688e02dcda272aec24c2f498abed
+ARG LIBTIFF_SHA256=c7a1d9296649233979fa3eacffef3fa024d73d05d589cb622727b5b08c423464
 # bump: lcms2 /LCMS2_VERSION=([\d.]+)/ https://github.com/mm2/Little-CMS.git|^2
 # bump: lcms2 after ./hashupdate Dockerfile LCMS2 $LATEST
 # bump: lcms2 link "Release" https://github.com/mm2/Little-CMS/releases/tag/lcms$LATEST
