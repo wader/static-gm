@@ -29,9 +29,9 @@ ARG GM_SHA256=88ddbf76e1ced2ab6bcd743207ee308865de1afb4b645d460924dcc8bfc0ee85
 # bump: libpng after ./hashupdate Dockerfile LIBPNG $LATEST
 # bump: libpng link "CHANGES" https://github.com/glennrp/libpng/blob/libpng16/CHANGES
 # bump: libpng link "Source diff $CURRENT..$LATEST" https://github.com/glennrp/libpng/compare/v$CURRENT..v$LATEST
-ARG LIBPNG_VERSION=1.6.39
+ARG LIBPNG_VERSION=1.6.40
 ARG LIBPNG_URL="https://sourceforge.net/projects/libpng/files/libpng16/$LIBPNG_VERSION/libpng-$LIBPNG_VERSION.tar.gz/download"
-ARG LIBPNG_SHA256=af4fb7f260f839919e5958e5ab01a275d4fe436d45442a36ee62f73e5beb75ba
+ARG LIBPNG_SHA256=8f720b363aa08683c9bf2a563236f45313af2c55d542b5481ae17dd8d183bb42
 # bump: jpeg /JPEG_VERSION=([\d.a-z]+)/ fetch:http://www.ijg.org|/The current version is release (.*) of/
 # bump: jpeg after ./hashupdate Dockerfile JPEG $LATEST
 ARG JPEG_VERSION=9e
