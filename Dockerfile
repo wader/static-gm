@@ -22,9 +22,9 @@ RUN apk add --no-cache \
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
 # bump: gm after ./hashupdate Dockerfile GM $LATEST
 # bumo: gm link "NEWS" http://www.graphicsmagick.org/NEWS.html
-ARG GM_VERSION=1.3.40
-ARG GM_URL="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/$GM_VERSION/GraphicsMagick-$GM_VERSION.tar.gz/download"
-ARG GM_SHA256=88ddbf76e1ced2ab6bcd743207ee308865de1afb4b645d460924dcc8bfc0ee85
+ARG GM_VERSION=1.3.41
+ARG GM_URL="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/$GM_VERSION/GraphicsMagick-$GM_VERSION.tar.xz/download"
+ARG GM_SHA256=b741b11ba86162db4d4ec1b354989a773f73c40722d1148239f6c69c9f04a6aa
 # bump: libpng /LIBPNG_VERSION=([\d.]+)/ https://github.com/glennrp/libpng.git|/^\d+.\d+.\d+/|~1
 # bump: libpng after ./hashupdate Dockerfile LIBPNG $LATEST
 # bump: libpng link "CHANGES" https://github.com/glennrp/libpng/blob/libpng16/CHANGES
@@ -143,7 +143,7 @@ RUN \
 RUN \
   wget -O gm.tar.gz "$GM_URL" && \
   echo "$GM_SHA256  gm.tar.gz" | sha256sum --status -c - && \
-  tar xfz gm.tar.gz && \
+  tar xf gm.tar.gz && \
   cd GraphicsMagick-* && \
   LDFLAGS="-static-pie" CFLAGS="-fPIE" ./configure \
   --enable-static \
