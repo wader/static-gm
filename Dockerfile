@@ -5,6 +5,7 @@ FROM alpine:3.18.3 AS builder
 RUN apk add --no-cache \
   coreutils \
   openssl \
+  wget \
   bash \
   patch \
   build-base \
@@ -18,6 +19,9 @@ RUN apk add --no-cache \
   nasm \
   zlib-dev \
   zlib-static
+
+# retry dns and some http codes that might be transient errors
+ARG WGET_OPTS="--retry-on-host-error --retry-on-http-error=429,500,502,503"
 
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
 # bump: gm after ./hashupdate Dockerfile GM $LATEST
@@ -69,7 +73,7 @@ ARG CXXFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIE"
 ARG LDFLAGS="-Wl,-z,relro -Wl,-z,now -fPIE -pie"
 
 RUN \
-  wget -O libpng.tar.gz "$LIBPNG_URL" && \
+  wget $WGET_OPTS -O libpng.tar.gz "$LIBPNG_URL" && \
   echo "$LIBPNG_SHA256  libpng.tar.gz" | sha256sum --status -c - && \
   tar xfz libpng.tar.gz && \
   cd libpng-* && \
@@ -80,7 +84,7 @@ RUN \
   make -j$(nproc) install
 
 RUN \
-  wget -O jpeg.tar.gz "$JPEG_URL" && \
+  wget $WGET_OPTS -O jpeg.tar.gz "$JPEG_URL" && \
   echo "$JPEG_SHA256  jpeg.tar.gz" | sha256sum --status -c - && \
   tar xfz jpeg.tar.gz && \
   cd jpeg-* && \
@@ -91,7 +95,7 @@ RUN \
   make -j$(nproc) install
 
 RUN \
-  wget -O jasper.tar.gz "$JASPER_URL" && \
+  wget $WGET_OPTS -O jasper.tar.gz "$JASPER_URL" && \
   echo "$JASPER_SHA256  jasper.tar.gz" | sha256sum --status -c - && \
   tar xfz jasper.tar.gz && \
   cd jasper-* && \
@@ -101,7 +105,7 @@ RUN \
   make -j$(nproc) install
 
 RUN \
-  wget -O libwebp.tar.gz "$LIBWEBP_URL" && \
+  wget $WGET_OPTS -O libwebp.tar.gz "$LIBWEBP_URL" && \
   echo "$LIBWEBP_SHA256  libwebp.tar.gz" | sha256sum --status -c - && \
   tar xfz libwebp.tar.gz && \
   cd libwebp-* && \
@@ -116,7 +120,7 @@ RUN \
   make -j$(nproc) install
 
 RUN \
-  wget -O tiff.tar.gz "$LIBTIFF_URL" && \
+  wget $WGET_OPTS -O tiff.tar.gz "$LIBTIFF_URL" && \
   echo "$LIBTIFF_SHA256  tiff.tar.gz" | sha256sum --status -c - && \
   tar xfz tiff.tar.gz && \
   cd tiff-* && \
@@ -129,7 +133,7 @@ RUN \
   make -j$(nproc) install
 
 RUN \
-  wget -O lcms2.tar.gz "$LCMS2_URL" && \
+  wget $WGET_OPTS -O lcms2.tar.gz "$LCMS2_URL" && \
   echo "$LCMS2_SHA256  lcms2.tar.gz" | sha256sum --status -c - && \
   tar xfz lcms2.tar.gz && \
   cd lcms2-* && \
@@ -141,7 +145,7 @@ RUN \
   make -j$(nproc) install
 
 RUN \
-  wget -O gm.tar.gz "$GM_URL" && \
+  wget $WGET_OPTS -O gm.tar.gz "$GM_URL" && \
   echo "$GM_SHA256  gm.tar.gz" | sha256sum --status -c - && \
   tar xf gm.tar.gz && \
   cd GraphicsMagick-* && \
