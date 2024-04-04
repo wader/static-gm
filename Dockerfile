@@ -29,8 +29,10 @@ ARG WGET_OPTS="--retry-on-host-error --retry-on-http-error=429,500,502,503"
 # --no-same-owner as we don't care about uid/gid even if we run as root. fixes invalid gid/uid issue.
 ARG TAR_OPTS="--no-same-owner --extract --file"
 
-ARG CFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIC"
-ARG CXXFLAGS="-O3 -fno-strict-overflow -fstack-protector-all -fPIC"
+# -static-libgcc is needed to make gcc not include gcc_s as "as-needed" shared library which
+# cmake will include as a implicit library.
+ARG CFLAGS="-O3 -static-libgcc -fno-strict-overflow -fstack-protector-all -fPIC"
+ARG CXXFLAGS="-O3 -static-libgcc -fno-strict-overflow -fstack-protector-all -fPIC"
 ARG LDFLAGS="-Wl,-z,relro -Wl,-z,now"
 
 # bump: libpng /LIBPNG_VERSION=([\d.]+)/ https://github.com/glennrp/libpng.git|/^\d+.\d+.\d+/|~1
@@ -183,6 +185,91 @@ RUN sed -i 's/-ljxl/-ljxl -lstdc++ /' /usr/local/lib/pkgconfig/libjxl.pc
 RUN sed -i 's/-ljxl_cms/-ljxl_cms -lstdc++ /' /usr/local/lib/pkgconfig/libjxl_cms.pc
 RUN sed -i 's/-ljxl_threads/-ljxl_threads -lstdc++ /' /usr/local/lib/pkgconfig/libjxl_threads.pc
 
+# bump: libde265 /LIBDE265_VERSION=([\d.a-z]+)/ https://github.com/strukturag/libde265.git|^1
+# bump: libde265 after ./hashupdate Dockerfile JPEG $LATEST
+ARG LIBDE265_VERSION=1.0.15
+ARG LIBDE265_URL="https://github.com/strukturag/libde265/releases/download/v$LIBDE265_VERSION/libde265-$LIBDE265_VERSION.tar.gz"
+ARG LIBDE265_SHA256=00251986c29d34d3af7117ed05874950c875dd9292d016be29d3b3762666511d
+RUN wget $WGET_OPTS -O libde265.tar.gz "$LIBDE265_URL"
+RUN echo "$LIBDE265_SHA256  libde265.tar.gz" | sha256sum --status -c -
+RUN \
+  tar $TAR_OPTS libde265.tar.gz && \
+  cd libde265-* && \
+  ./configure \
+  --enable-static \
+  --disable-shared \
+  --disable-sherlock265 \
+  && \
+  make -j$(nproc) install
+# hack for https://github.com/strukturag/libde265/pull/439
+RUN sed -i 's/@LIBS_PRIVATE@/-lstdc++ /' /usr/local/lib/pkgconfig/libde265.pc
+
+# x265 release is over 1 years old and master branch has a lot of fixes and improvements, so we checkout commit so no hash is needed
+# bump: x265 /X265_VERSION=([[:xdigit:]]+)/ gitrefs:https://bitbucket.org/multicoreware/x265_git.git|re:#^refs/heads/master$#|@commit
+# bump: x265 after ./hashupdate Dockerfile X265 $LATEST
+# bump: x265 link "Source diff $CURRENT..$LATEST" https://bitbucket.org/multicoreware/x265_git/branches/compare/$LATEST..$CURRENT#diff
+ARG X265_VERSION=e112940bba1b850667dca016a499148d4ead7d6b
+ARG X265_SHA256=f137263578e2e29574c70e3af91c77505bdc274cf1af94d6441a7f49248a5c95
+ARG X265_URL="https://bitbucket.org/multicoreware/x265_git/get/$X265_VERSION.tar.bz2"
+# CMAKEFLAGS issue
+# https://bitbucket.org/multicoreware/x265_git/issues/620/support-passing-cmake-flags-to-multilibsh
+RUN wget $WGET_OPTS -O x265_git.tar.bz2 "$X265_URL"
+RUN echo "$X265_SHA256  x265_git.tar.bz2" | sha256sum --status -c -
+RUN \
+  tar $TAR_OPTS x265_git.tar.bz2 && \
+  cd multicoreware-x265_git-*/build/linux && \
+  sed -i '/^cmake / s/$/ -G "Unix Makefiles" ${CMAKEFLAGS}/' ./multilib.sh && \
+  sed -i 's/ -DENABLE_SHARED=OFF//g' ./multilib.sh && \
+  MAKEFLAGS="-j$(nproc)" \
+  CMAKEFLAGS="-DENABLE_SHARED=OFF -DCMAKE_VERBOSE_MAKEFILE=ON -DENABLE_AGGRESSIVE_CHECKS=ON -DENABLE_NASM=ON -DCMAKE_BUILD_TYPE=Release" \
+  ./multilib.sh && \
+  make -C 8bit -j$(nproc) install
+
+# bump: aom /AOM_VERSION=([\d.]+)/ git:https://aomedia.googlesource.com/aom|*
+# bump: aom after ./hashupdate Dockerfile AOM $LATEST
+# bump: aom after COMMIT=$(git ls-remote https://aomedia.googlesource.com/aom v$LATEST^{} | awk '{print $1}') && sed -i -E "s/^ARG AOM_COMMIT=.*/ARG AOM_COMMIT=$COMMIT/" Dockerfile
+# bump: aom link "CHANGELOG" https://aomedia.googlesource.com/aom/+/refs/tags/v$LATEST/CHANGELOG
+ARG AOM_VERSION=3.8.2
+ARG AOM_URL="https://aomedia.googlesource.com/aom"
+ARG AOM_COMMIT=615b5f541e4434aebd993036bc97ebc1a77ebc25
+RUN git clone --depth 1 --branch v$AOM_VERSION "$AOM_URL"
+RUN cd aom && test $(git rev-parse HEAD) = $AOM_COMMIT
+RUN \
+  cd aom && \
+  mkdir build_tmp && cd build_tmp && \
+  cmake \
+    -G"Unix Makefiles" \
+    -DCMAKE_VERBOSE_MAKEFILE=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DENABLE_EXAMPLES=NO \
+    -DENABLE_DOCS=NO \
+    -DENABLE_TESTS=NO \
+    -DENABLE_TOOLS=NO \
+    -DENABLE_NASM=ON \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    .. && \
+  make -j$(nproc) install
+
+# bump: libheif /LIBHEIF_VERSION=([\d.]+)/ https://github.com/strukturag/libheif.git|^1 
+# bump: libheif after ./hashupdate Dockerfile GM $LATEST
+# bumo: libheif link "NEWS" http://www.graphicsmagick.org/NEWS.html
+ARG LIBHEIF_VERSION=1.17.6
+ARG LIBHEIF_URL="https://github.com/strukturag/libheif/releases/download/v$LIBHEIF_VERSION/libheif-$LIBHEIF_VERSION.tar.gz"
+ARG LIBHEIF_SHA256=8390baf4913eda0a183e132cec62b875fb2ef507ced5ddddc98dfd2f17780aee
+RUN wget $WGET_OPTS -O libheif.tar.gz "$LIBHEIF_URL"
+RUN echo "$LIBHEIF_SHA256  libheif.tar.gz" | sha256sum --status -c -
+RUN \
+  tar xf libheif.tar.gz && \
+  cd libheif-* && \
+  cmake \
+    -G "Unix Makefiles" \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DWITH_GDK_PIXBUF=NO \
+    --preset=release-noplugins \
+  && \
+  make -j$(nproc) install
+
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
 # bump: gm after ./hashupdate Dockerfile GM $LATEST
 # bumo: gm link "NEWS" http://www.graphicsmagick.org/NEWS.html
@@ -197,6 +284,8 @@ RUN \
   LDFLAGS="-static-pie" CFLAGS="-fPIE" \
   LIBJXL_CFLAGS="$(pkg-config --cflags libjxl)" \
   LIBJXL_LIBS="$(pkg-config --libs --static libjxl)" \
+  HEIF_CFLAGS="$(pkg-config --cflags libheif)" \
+  HEIF_LIBS="$(pkg-config --libs --static libheif)" \
   ./configure \
   --enable-static \
   --disable-shared \
@@ -209,6 +298,7 @@ RUN \
   --with-tiff \
   --with-lcms2 \
   --with-jxl \
+  --with-heif \
   && \
   make -j$(nproc) install
 
@@ -224,12 +314,17 @@ RUN ["/usr/local/bin/gm" ,"convert", "input.png", "test_png.tiff"]
 RUN ["/usr/local/bin/gm" ,"convert", "input.png", "test_png.webp"]
 RUN ["/usr/local/bin/gm" ,"convert", "input.png", "-define", "webp:lossless=true", "test_png.lossless.webp"]
 RUN ["/usr/local/bin/gm" ,"convert", "input.png", "test_png.jxl"]
+# TODO: gm heif and avif support is decode only as of writing
+#RUN ["/usr/local/bin/gm" ,"convert", "input.png", "test_png.heif"]
+#RUN ["/usr/local/bin/gm" ,"convert", "input.png", "test_png.avif"]
 RUN ["/usr/local/bin/gm" ,"identify", "test_png.png"]
 RUN ["/usr/local/bin/gm" ,"identify", "test_png.jpg"]
 RUN ["/usr/local/bin/gm" ,"identify", "test_png.tiff"]
 RUN ["/usr/local/bin/gm" ,"identify", "test_png.webp"]
 RUN ["/usr/local/bin/gm" ,"identify", "test_png.lossless.webp"]
 RUN ["/usr/local/bin/gm" ,"identify", "test_png.jxl"]
+#RUN ["/usr/local/bin/gm" ,"identify", "test_png.heif"]
+#RUN ["/usr/local/bin/gm" ,"identify", "test_png.avif"]
 
 FROM scratch
 COPY icc-profiles /icc-profiles
