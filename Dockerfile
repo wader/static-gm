@@ -233,7 +233,10 @@ RUN ["/usr/local/bin/gm" ,"identify", "test_png.jxl"]
 
 FROM scratch
 COPY icc-profiles /icc-profiles
+COPY delegates.mgk /
 COPY --from=builder /usr/local/bin/gm /
+# point to empty delegates.mgk to prevent confusing missing delegates error
+ENV MAGICK_CONFIGURE_PATH=/
 # sanity test binary
 RUN ["/gm" ,"version"]
 ENTRYPOINT ["/gm"]
