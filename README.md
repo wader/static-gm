@@ -5,12 +5,13 @@ external dependencies. Can be used with any base image even scratch.
 
 Built with:
 - ijg jpeg
-- jasper
+- jasper (JPEG2000)
 - lcms2
 - libpng
 - libtiff
 - libwebp
-- libjxl
+- libjxl (JPEG XL)
+- libheif (HEIF and AVIF decode only)
 - quantum-depth=16,
 
 ### Usage
