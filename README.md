@@ -10,6 +10,7 @@ Built with:
 - libpng
 - libtiff
 - libwebp
+- libjxl
 - quantum-depth=16,
 
 ### Usage
