@@ -208,8 +208,8 @@ RUN sed -i 's/@LIBS_PRIVATE@/-lstdc++ /' /usr/local/lib/pkgconfig/libde265.pc
 # bump: x265 /X265_VERSION=([[:xdigit:]]+)/ gitrefs:https://bitbucket.org/multicoreware/x265_git.git|re:#^refs/heads/master$#|@commit
 # bump: x265 after ./hashupdate Dockerfile X265 $LATEST
 # bump: x265 link "Source diff $CURRENT..$LATEST" https://bitbucket.org/multicoreware/x265_git/branches/compare/$LATEST..$CURRENT#diff
-ARG X265_VERSION=dd1ef69b25ec26cc80be0fc8d9afeeef6563762b
-ARG X265_SHA256=8cef03006bedf7691e539d8ccc161fb4f78ed08b9e154c3d53c499f34494bd77
+ARG X265_VERSION=8787e87020d77416f0ff0b7f3c97ac8b90332c31
+ARG X265_SHA256=e6a1aa4e2bb0745d6f855b6db2008643899da9a8ed85cb6f481be8800ff9e829
 ARG X265_URL="https://bitbucket.org/multicoreware/x265_git/get/$X265_VERSION.tar.bz2"
 # CMAKEFLAGS issue
 # https://bitbucket.org/multicoreware/x265_git/issues/620/support-passing-cmake-flags-to-multilibsh
