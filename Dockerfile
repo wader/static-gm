@@ -274,9 +274,9 @@ RUN \
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
 # bump: gm after ./hashupdate Dockerfile GM $LATEST
 # bumo: gm link "NEWS" http://www.graphicsmagick.org/NEWS.html
-ARG GM_VERSION=1.3.44
+ARG GM_VERSION=1.3.45
 ARG GM_URL="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/$GM_VERSION/GraphicsMagick-$GM_VERSION.tar.xz/download"
-ARG GM_SHA256=6ac28470d2fbd3d5f60859dd43f3cee2585e955e32896f892b4dc61dda101ea0
+ARG GM_SHA256=dcea5167414f7c805557de2d7a47a9b3147bcbf617b91f5f0f4afe5e6543026b
 RUN wget $WGET_OPTS -O gm.tar.gz "$GM_URL"
 RUN echo "$GM_SHA256  gm.tar.gz" | sha256sum --status -c -
 RUN \
