@@ -16,10 +16,10 @@ Built with:
 
 ### Usage
 ```Dockerfile
-COPY --from=mwader/static-gm:1.3.44 /gm /usr/local/bin/
+COPY --from=mwader/static-gm:1.3.45 /gm /usr/local/bin/
 ```
 ```sh
-docker run --rm -u $UID:$GROUPS -v "$PWD:$PWD" -w "$PWD" mwader/static-gm:1.3.44 identify test.png
+docker run --rm -u $UID:$GROUPS -v "$PWD:$PWD" -w "$PWD" mwader/static-gm:1.3.45 identify test.png
 ```
 
 ### Files in the image
