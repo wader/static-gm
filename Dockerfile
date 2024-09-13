@@ -39,9 +39,9 @@ ARG LDFLAGS="-Wl,-z,relro -Wl,-z,now"
 # bump: libpng after ./hashupdate Dockerfile LIBPNG $LATEST
 # bump: libpng link "CHANGES" https://github.com/glennrp/libpng/blob/libpng16/CHANGES
 # bump: libpng link "Source diff $CURRENT..$LATEST" https://github.com/glennrp/libpng/compare/v$CURRENT..v$LATEST
-ARG LIBPNG_VERSION=1.6.43
+ARG LIBPNG_VERSION=1.6.44
 ARG LIBPNG_URL="https://sourceforge.net/projects/libpng/files/libpng16/$LIBPNG_VERSION/libpng-$LIBPNG_VERSION.tar.gz/download"
-ARG LIBPNG_SHA256=e804e465d4b109b5ad285a8fb71f0dd3f74f0068f91ce3cdfde618180c174925
+ARG LIBPNG_SHA256=8c25a7792099a0089fa1cc76c94260d0bb3f1ec52b93671b572f8bb61577b732
 RUN wget $WGET_OPTS -O libpng.tar.gz "$LIBPNG_URL"
 RUN echo "$LIBPNG_SHA256  libpng.tar.gz" | sha256sum --status -c -
 RUN \
