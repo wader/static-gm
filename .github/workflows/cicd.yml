@@ -29,7 +29,6 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: mwader/static-gm
-          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=ref,event=tag
@@ -39,7 +38,6 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
