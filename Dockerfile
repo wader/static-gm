@@ -119,7 +119,6 @@ RUN echo "$LIBTIFF_SHA256  tiff.tar.gz" | sha256sum --status -c -
 RUN \
   tar $TAR_OPTS tiff.tar.gz && \
   cd tiff-* && \
-  ./autogen.sh && \
   ./configure \
   --enable-static \
   --disable-shared \
@@ -138,7 +137,6 @@ RUN echo "$LCMS2_SHA256  lcms2.tar.gz" | sha256sum --status -c -
 RUN \
   tar $TAR_OPTS lcms2.tar.gz && \
   cd lcms2-* && \
-  ./autogen.sh && \
   ./configure \
   --enable-static \
   --disable-shared \
@@ -187,10 +185,10 @@ RUN sed -i 's/-ljxl_cms/-ljxl_cms -lstdc++ /' /usr/local/lib/pkgconfig/libjxl_cm
 RUN sed -i 's/-ljxl_threads/-ljxl_threads -lstdc++ /' /usr/local/lib/pkgconfig/libjxl_threads.pc
 
 # bump: libde265 /LIBDE265_VERSION=([\d.a-z]+)/ https://github.com/strukturag/libde265.git|^1
-# bump: libde265 after ./hashupdate Dockerfile JPEG $LATEST
-ARG LIBDE265_VERSION=1.0.15
+# bump: libde265 after ./hashupdate Dockerfile LIBDE265 $LATEST
+ARG LIBDE265_VERSION=1.0.16
 ARG LIBDE265_URL="https://github.com/strukturag/libde265/releases/download/v$LIBDE265_VERSION/libde265-$LIBDE265_VERSION.tar.gz"
-ARG LIBDE265_SHA256=00251986c29d34d3af7117ed05874950c875dd9292d016be29d3b3762666511d
+ARG LIBDE265_SHA256=b92beb6b53c346db9a8fae968d686ab706240099cdd5aff87777362d668b0de7
 RUN wget $WGET_OPTS -O libde265.tar.gz "$LIBDE265_URL"
 RUN echo "$LIBDE265_SHA256  libde265.tar.gz" | sha256sum --status -c -
 RUN \
