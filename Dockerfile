@@ -251,9 +251,9 @@ RUN \
 # bump: libheif /LIBHEIF_VERSION=([\d.]+)/ https://github.com/strukturag/libheif.git|^1 
 # bump: libheif after ./hashupdate Dockerfile LIBHEIF $LATEST
 # bumo: libheif link "NEWS" http://www.graphicsmagick.org/NEWS.html
-ARG LIBHEIF_VERSION=1.19.8
+ARG LIBHEIF_VERSION=1.20.0
 ARG LIBHEIF_URL="https://github.com/strukturag/libheif/releases/download/v$LIBHEIF_VERSION/libheif-$LIBHEIF_VERSION.tar.gz"
-ARG LIBHEIF_SHA256=6c4a5b08e6eae66d199977468859dea3b5e059081db8928f7c7c16e53836c906
+ARG LIBHEIF_SHA256=b2e08489b0c4a9d7ec44e546ee1e0c1ed9f5de066414d88d868987641eeee564
 RUN wget $WGET_OPTS -O libheif.tar.gz "$LIBHEIF_URL"
 RUN echo "$LIBHEIF_SHA256  libheif.tar.gz" | sha256sum --status -c -
 RUN \
