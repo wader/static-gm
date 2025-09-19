@@ -111,9 +111,9 @@ RUN \
 # bump: libtiff /LIBTIFF_VERSION=([\d.]+)/ https://gitlab.com/libtiff/libtiff.git|^4
 # bump: libtiff after ./hashupdate Dockerfile LIBTIFF $LATEST
 # bump: libtiff link "ChangeLog" https://gitlab.com/libtiff/libtiff/-/blob/master/ChangeLog
-ARG LIBTIFF_VERSION=4.7.0
+ARG LIBTIFF_VERSION=4.7.1
 ARG LIBTIFF_URL="http://download.osgeo.org/libtiff/tiff-$LIBTIFF_VERSION.tar.gz"
-ARG LIBTIFF_SHA256=67160e3457365ab96c5b3286a0903aa6e78bdc44c4bc737d2e486bcecb6ba976
+ARG LIBTIFF_SHA256=f698d94f3103da8ca7438d84e0344e453fe0ba3b7486e04c5bf7a9a3fabe9b69
 RUN wget $WGET_OPTS -O tiff.tar.gz "$LIBTIFF_URL"
 RUN echo "$LIBTIFF_SHA256  tiff.tar.gz" | sha256sum --status -c -
 RUN \
