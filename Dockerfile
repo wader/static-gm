@@ -1,6 +1,6 @@
 # bump: alpine /FROM alpine:([\d.]+)/ docker:alpine|^3
 # bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
-FROM alpine:3.22.2 AS builder
+FROM alpine:3.23.0 AS builder
 
 RUN apk add --no-cache \
   coreutils \
@@ -83,7 +83,7 @@ RUN \
   cd jasper-* && \
   mkdir tmp && \
   cd tmp && \
-  cmake -G "Unix Makefiles" -DJAS_ENABLE_SHARED=OFF -H.. -B. && \
+  cmake3.5 -G "Unix Makefiles" -DJAS_ENABLE_SHARED=OFF -H.. -B. && \
   make -j$(nproc) install
 
 # bump: libwebp /LIBWEBP_VERSION=([\d.]+)/ https://github.com/webmproject/libwebp.git|*
@@ -217,6 +217,11 @@ RUN \
   tar $TAR_OPTS x265_git.tar.bz2 && cd x265_*/build/linux && \
   sed -i '/^cmake / s/$/ -G "Unix Makefiles" ${CMAKEFLAGS}/' ./multilib.sh && \
   sed -i 's/ -DENABLE_SHARED=OFF//g' ./multilib.sh && \
+  # https://bitbucket.org/multicoreware/x265_git/commits/b354c009a60bcd6d7fc04014e200a1ee9c45c167
+  sed -i 's/cmake_policy(SET CMP0025 OLD)/cmake_policy(SET CMP0025 NEW)/g' ../../source/CMakeLists.txt && \
+  sed -i 's/cmake_policy(SET CMP0054 OLD)/cmake_policy(SET CMP0054 NEW)/g' ../../source/CMakeLists.txt && \
+  # https://bitbucket.org/multicoreware/x265_git/issues/1008/build-fails-with-cmake-4
+  sed -i 's/cmake/cmake3.5/g' ./multilib.sh && \
   MAKEFLAGS="-j$(nproc)" \
   CMAKEFLAGS="-DENABLE_SHARED=OFF -DCMAKE_VERBOSE_MAKEFILE=ON -DENABLE_AGGRESSIVE_CHECKS=ON -DENABLE_NASM=ON -DCMAKE_BUILD_TYPE=Release" \
   ./multilib.sh && \
