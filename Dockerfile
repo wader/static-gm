@@ -73,9 +73,9 @@ RUN \
 # bump: jasper after ./hashupdate Dockerfile JASPER $LATEST
 # bump: jasper link "NEWS" https://github.com/jasper-software/jasper/blob/master/NEWS
 # bump: jasper link "Source diff $CURRENT..$LATEST" https://github.com/jasper-software/jasper/compare/version-$CURRENT..version-$LATEST
-ARG JASPER_VERSION=2.0.33
+ARG JASPER_VERSION=4.2.8
 ARG JASPER_URL="https://github.com/mdadams/jasper/archive/version-$JASPER_VERSION.tar.gz"
-ARG JASPER_SHA256=38b8f74565ee9e7fec44657e69adb5c9b2a966ca5947ced5717cde18a7d2eca6
+ARG JASPER_SHA256=987e8c8b4afcff87553833b6f0fa255b5556a0ecc617b45ee1882e10c1b5ec14
 RUN wget $WGET_OPTS -O jasper.tar.gz "$JASPER_URL"
 RUN echo "$JASPER_SHA256  jasper.tar.gz" | sha256sum --status -c -
 RUN \
