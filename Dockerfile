@@ -69,7 +69,7 @@ RUN \
   && \
   make -j$(nproc) install
 
-# bump: jasper /JASPER_VERSION=([\d.]+)/ https://github.com/mdadams/jasper.git|^2
+# bump: jasper /JASPER_VERSION=([\d.]+)/ https://github.com/mdadams/jasper.git|^4
 # bump: jasper after ./hashupdate Dockerfile JASPER $LATEST
 # bump: jasper link "NEWS" https://github.com/jasper-software/jasper/blob/master/NEWS
 # bump: jasper link "Source diff $CURRENT..$LATEST" https://github.com/jasper-software/jasper/compare/version-$CURRENT..version-$LATEST
