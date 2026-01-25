@@ -55,9 +55,9 @@ RUN \
 
 # bump: jpeg /JPEG_VERSION=([\d.a-z]+)/ fetch:http://www.ijg.org|/The current version is release (.*) of/
 # bump: jpeg after ./hashupdate Dockerfile JPEG $LATEST
-ARG JPEG_VERSION=9f
+ARG JPEG_VERSION=10
 ARG JPEG_URL="http://www.ijg.org/files/jpegsrc.v$JPEG_VERSION.tar.gz"
-ARG JPEG_SHA256=04705c110cb2469caa79fb71fba3d7bf834914706e9641a4589485c1f832565b
+ARG JPEG_SHA256=8b9eaa13242690ebd03e1728ab1edf97a81a78ed6e83624d493655f31ac95ab5
 RUN wget $WGET_OPTS -O jpeg.tar.gz "$JPEG_URL"
 RUN echo "$JPEG_SHA256  jpeg.tar.gz" | sha256sum --status -c -
 RUN \
