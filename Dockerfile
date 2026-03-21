@@ -186,22 +186,22 @@ RUN sed -i 's/-ljxl_threads/-ljxl_threads -lstdc++ /' /usr/local/lib/pkgconfig/l
 
 # bump: libde265 /LIBDE265_VERSION=([\d.a-z]+)/ https://github.com/strukturag/libde265.git|^1
 # bump: libde265 after ./hashupdate Dockerfile LIBDE265 $LATEST
-ARG LIBDE265_VERSION=1.0.16
+ARG LIBDE265_VERSION=1.0.18
 ARG LIBDE265_URL="https://github.com/strukturag/libde265/releases/download/v$LIBDE265_VERSION/libde265-$LIBDE265_VERSION.tar.gz"
-ARG LIBDE265_SHA256=b92beb6b53c346db9a8fae968d686ab706240099cdd5aff87777362d668b0de7
+ARG LIBDE265_SHA256=800478f3bf35f0621b14928ceb317579f3e8b23de4bd2aac29b6cb8be962bbd8
 RUN wget $WGET_OPTS -O libde265.tar.gz "$LIBDE265_URL"
 RUN echo "$LIBDE265_SHA256  libde265.tar.gz" | sha256sum --status -c -
 RUN \
   tar $TAR_OPTS libde265.tar.gz && \
   cd libde265-* && \
-  ./configure \
-  --enable-static \
-  --disable-shared \
-  --disable-sherlock265 \
-  && \
+  mkdir build && \
+  cd build && \
+  cmake \
+    -G"Unix Makefiles" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=OFF \
+    .. && \
   make -j$(nproc) install
-# hack for https://github.com/strukturag/libde265/pull/439
-RUN sed -i 's/@LIBS_PRIVATE@/-lstdc++ /' /usr/local/lib/pkgconfig/libde265.pc
 
 # bump: x265 /X265_VERSION=([\d.]+)/ https://bitbucket.org/multicoreware/x265_git.git|*
 # bump: x265 after ./hashupdate Dockerfile X265 $LATEST
