@@ -186,9 +186,9 @@ RUN sed -i 's/-ljxl_threads/-ljxl_threads -lstdc++ /' /usr/local/lib/pkgconfig/l
 
 # bump: libde265 /LIBDE265_VERSION=([\d.a-z]+)/ https://github.com/strukturag/libde265.git|^1
 # bump: libde265 after ./hashupdate Dockerfile LIBDE265 $LATEST
-ARG LIBDE265_VERSION=1.1.1
+ARG LIBDE265_VERSION=1.1.2
 ARG LIBDE265_URL="https://github.com/strukturag/libde265/releases/download/v$LIBDE265_VERSION/libde265-$LIBDE265_VERSION.tar.gz"
-ARG LIBDE265_SHA256=fd48a927e94ed74fc7ce8829d222b9d8599fcbfe8b6448ba66705babc56ab219
+ARG LIBDE265_SHA256=eaacd1943ab0c452c19f6136a36ca227e6b761b39a81eaca8454d48c147e1f67
 RUN wget $WGET_OPTS -O libde265.tar.gz "$LIBDE265_URL"
 RUN echo "$LIBDE265_SHA256  libde265.tar.gz" | sha256sum --status -c -
 RUN \
