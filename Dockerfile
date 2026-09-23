@@ -231,9 +231,9 @@ RUN \
 # bump: aom after ./hashupdate Dockerfile AOM $LATEST
 # bump: aom after COMMIT=$(git ls-remote https://aomedia.googlesource.com/aom v$LATEST^{} | awk '{print $1}') && sed -i -E "s/^ARG AOM_COMMIT=.*/ARG AOM_COMMIT=$COMMIT/" Dockerfile
 # bump: aom link "CHANGELOG" https://aomedia.googlesource.com/aom/+/refs/tags/v$LATEST/CHANGELOG
-ARG AOM_VERSION=3.14.1
+ARG AOM_VERSION=3.15.1
 ARG AOM_URL="https://aomedia.googlesource.com/aom"
-ARG AOM_COMMIT=03087864cf4bea6abb0d28f95cf7843511413d8f
+ARG AOM_COMMIT=44d0a57786f432d933ff64b653347c66f4d0fa1d
 RUN git clone --depth 1 --branch v$AOM_VERSION "$AOM_URL"
 RUN cd aom && test $(git rev-parse HEAD) = $AOM_COMMIT
 RUN \
@@ -248,6 +248,7 @@ RUN \
     -DENABLE_DOCS=NO \
     -DENABLE_TESTS=NO \
     -DENABLE_TOOLS=NO \
+    -DENABLE_APPS=NO \
     -DENABLE_NASM=ON \
     -DCMAKE_INSTALL_LIBDIR=lib \
     .. && \
