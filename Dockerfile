@@ -256,7 +256,7 @@ RUN \
 
 # bump: libheif /LIBHEIF_VERSION=([\d.]+)/ https://github.com/strukturag/libheif.git|^1 
 # bump: libheif after ./hashupdate Dockerfile LIBHEIF $LATEST
-# bumo: libheif link "NEWS" http://www.graphicsmagick.org/NEWS.html
+# bump: libheif link "Changelog" https://github.com/strukturag/libheif/releases/tag/v$LATEST
 ARG LIBHEIF_VERSION=1.23.6
 ARG LIBHEIF_URL="https://github.com/strukturag/libheif/releases/download/v$LIBHEIF_VERSION/libheif-$LIBHEIF_VERSION.tar.gz"
 ARG LIBHEIF_SHA256=4484346dc5995319dbc11e3a1c35d0a2ec46511ce370900869337fd2c7033125
@@ -276,7 +276,7 @@ RUN \
 
 # bump: gm /GM_VERSION=([\d.]+)/ fetch:http://hg.code.sf.net/p/graphicsmagick/code/raw-file/GraphicsMagick-1_3/.hgtags|/.* GraphicsMagick-(\d+_\d+_\d+).*/|/_/./|^1
 # bump: gm after ./hashupdate Dockerfile GM $LATEST
-# bumo: gm link "NEWS" http://www.graphicsmagick.org/NEWS.html
+# bump: gm link "NEWS" http://www.graphicsmagick.org/NEWS.html
 ARG GM_VERSION=1.3.49
 ARG GM_URL="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/$GM_VERSION/GraphicsMagick-$GM_VERSION.tar.xz/download"
 ARG GM_SHA256=7efa070dc31116b4315061b39f84bc7181e8b060bf61214ec9af851131af9c81
